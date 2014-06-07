@@ -1,5 +1,6 @@
 from __future__ import with_statement
 import Live
+from settings import settings
 from _Framework.ControlSurface import ControlSurface
 from _Framework.InputControlElement import *  # noqa
 from _Framework.ButtonElement import ButtonElement
@@ -71,7 +72,11 @@ class Launchpad(ControlSurface):
 			side_buttons[7].name = 'Arm_Button'
 			self._osd = M4LInterface()
 			self._osd.name = "OSD"
-			self._selector = MainSelectorComponent(matrix, tuple(top_buttons), tuple(side_buttons), self._config_button, self._osd, self)
+			self._selector = MainSelectorComponent(
+				matrix, tuple(top_buttons),
+				tuple(side_buttons),
+				self._config_button,
+				self._osd, self)
 			self._selector.name = 'Main_Modes'
 			self._do_combine()
 			for control in self.controls:
@@ -81,8 +86,8 @@ class Launchpad(ControlSurface):
 			self.set_highlighting_session_component(self._selector.session_component())
 			self._suppress_session_highlight = False
 			# self.set_suppress_rebuild_requests(False)
-
-			self.log_message("LaunchPad95 Loaded !")
+			if settings.debug:
+				self.log_message("LaunchPad95 Loaded !")
 
 	def disconnect(self):
 		self._suppress_send_midi = True
